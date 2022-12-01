@@ -12,7 +12,8 @@ RUN mvn package
 
 #pull base image
 
-FROM openjdk:8-jdk-alpine
+#FROM openjdk:8-jdk-alpine
+FROM openjdk:18-jdk-alpine3.15
 
 #maintainer 
 MAINTAINER dstar55@yahoo.com
