@@ -1,14 +1,14 @@
 # Maven build container 
 
-FROM maven:3.5.2-jdk-8-alpine AS maven_build
+#FROM maven:3.5.2-jdk-8-alpine AS maven_build
 
-COPY pom.xml /tmp/
+#COPY pom.xml /tmp/
 
-COPY src /tmp/src/
+#COPY src /tmp/src/
 
-WORKDIR /tmp/
+#WORKDIR /tmp/
 
-RUN mvn package
+#RUN mvn package
 
 #pull base image
 
