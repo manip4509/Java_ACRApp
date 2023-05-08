@@ -3,7 +3,7 @@ on: workflow_dispatch
 name: Java_containerapp_deployment
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
     # checkout the repo
@@ -25,12 +25,21 @@ jobs:
     - run: |
         docker build . -t testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
         docker push testregistry4572.azurecr.io/javasampleapp:${{ github.sha }} 
-        
+
+
+  deploy:
+      runs-on: ubuntu-latest
+      
+      steps:
+      - name: 'Login via Azure CLI'
+        uses: Azure/login@v1
+        with:
+         creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
     
-    - name: Deploy Container App
-      uses: azure/container-apps-deploy-action@v1
-      with:
-        acrName: testregistry4572
-        containerAppName: javacontainerapp
-        resourceGroup: serviceprinciple
-        #imageToDeploy: testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
+      - name: Deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+         acrName: testregistry4572
+         containerAppName: javacontainerapp
+         resourceGroup: serviceprinciple
+         imageToDeploy: testregistry4572.azurecr.io/testregistry4572.azurecr.io/javasampleapp:f588e0bdee749a5c6fa73114336a2676e77fa799
