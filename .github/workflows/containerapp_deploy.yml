@@ -37,18 +37,21 @@ jobs:
         with:
          creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
     
-      - uses: azure/docker-login@v1
+       
+      - name: 'Deploy Container App'
+        uses: Azure/cli@v1
         with:
-         login-server: testregistry4572.azurecr.io
-         username: ${{ secrets.REGISTRY_USERNAME }}
-         password: ${{ secrets.REGISTRY_PASSWORD }}
-    
-      - name: Deploy Container App
-        uses: azure/container-apps-deploy-action@v1
-        with:
-         acrName: testregistry4572
-         #appSourcePath: ${{ github.workspace }}/src 
-         containerAppName: javacontainerapp
-         containerAppEnvironment: managedEnvironment-serviceprincipl-9710
-         resourceGroup: serviceprinciple
-         imageToDeploy: testregistry4572.azurecr.io/javasampleapp:${{ github.sha }} 
+         inlineScript: |
+          echo "Installing containerapp extension"
+          az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
+          echo "Starting Deploying" 
+          az containerapp create \
+                --name testjavaapp \
+                --resource-group serviceprinciple \
+                --environment managedEnvironment-serviceprincipl-9710 \
+                --image testregistry4572.azurecr.io/javasampleapp:${{ github.sha }} \
+                --registry-server testregistry4572.azurecr.io \
+                --registry-username ${{ secrets.REGISTRY_USERNAME }} \
+                --registry-password ${{ secrets.REGISTRY_PASSWORD }}\
+                --target-port 8080 \
+                --ingress 'external'
