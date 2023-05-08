@@ -25,12 +25,23 @@ jobs:
     - run: |
         docker build . -t testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
         docker push testregistry4572.azurecr.io/javasampleapp:${{ github.sha }} 
-      
-    - uses: azure/webapps-deploy@v2
+        
+    - name: 'Deploy to Azure Container Instances'
+      uses: 'azure/aci-deploy@v1'
       with:
-        app-name: 'javacontainerapp'
-        images: 'testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}'
+            resource-group: serviceprinciple
+            dns-name-label: https://javacontainerapp.politegrass-caa43753.eastus.azurecontainerapps.io
+            image: testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: javacontainerapp
+            location: 'East US'    
+      
+   # - uses: azure/webapps-deploy@v2
+    #  with:
+     #   app-name: 'javacontainerapp'
+      #  images: 'testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}'
     
-    - name: Azure logout
-      run: |
-        az logout
+    #- name: Azure logout
+     # run: |
+      #  az logout
