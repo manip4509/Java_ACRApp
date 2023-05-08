@@ -46,6 +46,7 @@ jobs:
       - name: Deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
+         acrName: testregistry4572
          appSourcePath: ${{ github.workspace }}/src 
          containerAppName: javacontainerapp
          containerAppEnvironment: managedEnvironment-serviceprincipl-9710
