@@ -37,6 +37,12 @@ jobs:
         with:
          creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
     
+      - uses: azure/docker-login@v1
+        with:
+         login-server: testregistry4572.azurecr.io
+         username: ${{ secrets.REGISTRY_USERNAME }}
+         password: ${{ secrets.REGISTRY_PASSWORD }}
+    
       - name: Deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
