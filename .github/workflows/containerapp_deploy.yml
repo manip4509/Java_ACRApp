@@ -42,4 +42,4 @@ jobs:
          acrName: testregistry4572
          containerAppName: javacontainerapp
          resourceGroup: serviceprinciple
-         imageToDeploy: testregistry4572.azurecr.io/testregistry4572.azurecr.io/javasampleapp:f588e0bdee749a5c6fa73114336a2676e77fa799
+         imageToDeploy: testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
