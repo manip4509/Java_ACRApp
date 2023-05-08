@@ -27,11 +27,10 @@ jobs:
         docker push testregistry4572.azurecr.io/javasampleapp:${{ github.sha }} 
         
     
-    - uses: azure/webapps-deploy@v2
+    - name: Deploy Container App
+      uses: azure/container-apps-deploy-action@v1
       with:
-        app-name: 'javacontainerapp'
-        images: 'testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}'
-    
-    #- name: Azure logout
-     # run: |
-      #  az logout
+        acrName: testregistry4572
+        containerAppName: javacontainerapp
+        resourceGroup: serviceprinciple
+        imageToDeploy: testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
