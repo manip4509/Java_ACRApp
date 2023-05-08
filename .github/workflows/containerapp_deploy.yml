@@ -26,28 +26,11 @@ jobs:
         docker build . -t testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
         docker push testregistry4572.azurecr.io/javasampleapp:${{ github.sha }} 
         
-    - name: 'Deploy to Azure Container Instances'
-      uses: 'azure/aci-deploy@v1'
-        
-    - name: Configure Azure CLI
-      run: |
-        az configure --defaults location=East US
-        az configure --defaults group=serviceprinciple
     
-    - name: Start container instance
-      uses: Azure/container-instances@v1
+    - uses: azure/webapps-container-deploy@v2
       with:
-        resource-group: serviceprinciple
-        name: javacontainerapp
-        image: testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
-        registry-login-server: testregistry4572.azurecr.io
-        registry-username: ${{ secrets.REGISTRY_USERNAME }}
-        registry-password: ${{ secrets.REGISTRY_PASSWORD }} 
-      
-   # - uses: azure/webapps-deploy@v2
-    #  with:
-     #   app-name: 'javacontainerapp'
-      #  images: 'testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}'
+        app-name: 'javacontainerapp'
+        images: 'testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}'
     
     #- name: Azure logout
      # run: |
