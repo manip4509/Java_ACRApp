@@ -27,7 +27,7 @@ jobs:
         docker push testregistry4572.azurecr.io/javasampleapp:${{ github.sha }} 
         
     
-    - uses: azure/webapps-container-deploy@v1
+    - uses: azure/webapps-deploy@v2
       with:
         app-name: 'javacontainerapp'
         images: 'testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}'
