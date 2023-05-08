@@ -28,14 +28,21 @@ jobs:
         
     - name: 'Deploy to Azure Container Instances'
       uses: 'azure/aci-deploy@v1'
+        
+    - name: Configure Azure CLI
+      run: |
+        az configure --defaults location=East US
+        az configure --defaults group=serviceprinciple
+    
+    - name: Start container instance
+      uses: Azure/container-instances@v1
       with:
-            resource-group: serviceprinciple
-            dns-name-label: testregistry4572.azurecr.io
-            image: testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
-            registry-username: ${{ secrets.REGISTRY_USERNAME }}
-            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: javacontainerapp
-            location: 'East US'    
+        resource-group: serviceprinciple
+        name: javacontainerapp
+        image: testregistry4572.azurecr.io/javasampleapp:${{ github.sha }}
+        registry-login-server: testregistry4572.azurecr.io
+        registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        registry-password: ${{ secrets.REGISTRY_PASSWORD }} 
       
    # - uses: azure/webapps-deploy@v2
     #  with:
