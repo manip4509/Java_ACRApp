@@ -43,8 +43,8 @@ jobs:
         with:
          inlineScript: |
           echo "Installing containerapp extension"
-          az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
-          echo "Starting Deploying" 
+          az extension add -n containerapp
+          
           az containerapp create \
                 --name testjavaapp \
                 --resource-group serviceprinciple \
